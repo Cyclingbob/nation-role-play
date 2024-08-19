@@ -1,7 +1,11 @@
+const fs = require("fs")
+const path = require("path")
+
 class Table {
-    constructor(path){
+    constructor(table_path){
         this.data = []
-        this.path = path
+        this.path = table_path
+        this.name = path.basename(table_path).slice(0, -5)
         this.load()
     }
 
