@@ -1,5 +1,5 @@
-const Database = require("./database_system")
-const db = new Database("./database_tables")
+const Database = require("./db/database_system")
+const db = new Database("./db/database_tables")
 console.log(db.listLoadedTables())
 
 // class NRP {
