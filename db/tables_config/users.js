@@ -1,5 +1,5 @@
 const config = {
-    id: String,
+    id: Number,
     username: String,
     password: String,
     created: Date,
