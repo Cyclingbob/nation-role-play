@@ -3,15 +3,17 @@ const path = require("path")
 const Table = require("./table")
 
 class Database {
-    constructor(table_dir){
+    constructor(table_dir, table_config_dir){
         this.table_dir = path.resolve(table_dir)
-        this.tables = []
+        this.config_dir = path.resolve(table_config_dir)
+        this.tables = {}
         this.load()
     }
 
     loadTable(name){
         let file = path.join(this.table_dir, name + ".json")
-        this.tables.push(new Table(file))
+        let config = require(path.resolve(this.config_dir, name + ".js"))
+        this.tables[name] = new Table(file, config)
     }
 
     listFoundTables(){

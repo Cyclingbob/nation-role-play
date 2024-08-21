@@ -2,9 +2,10 @@ const fs = require("fs")
 const path = require("path")
 
 class Table {
-    constructor(table_path){
+    constructor(table_path, table_config){
         this.data = []
         this.path = table_path
+        this.config = table_config
         this.name = path.basename(table_path).slice(0, -5)
         this.load()
     }
@@ -14,7 +15,7 @@ class Table {
             const fileData = fs.readFileSync(this.path, 'utf8');
             this.data = JSON.parse(fileData);
         } catch (error) {
-            console.error('Failed to load data:', error);
+            console.error('Failed to load data from table ' + this.name + ": Couldn't parse file " + this.path + "\n", error);
             this.data = [];
         }
     }
@@ -41,8 +42,11 @@ class Table {
     }
 
     add(entry) {
-        this.data.push(entry);
-        this.save();
+        for(const property in entry){
+            console.log(property)
+        }
+        // this.data.push(entry);
+        // this.save();
     }
 
     update(key, value, updatedEntry){
@@ -62,17 +66,17 @@ class Table {
         return updated;
     }
 
-    delete(key, value) {
-        const originalLength = this.data.length;
-        this.data = this.data.filter(entry => entry[key] !== value);
+    // delete(key, value) {
+    //     const originalLength = this.data.length;
+    //     this.data = this.data.filter(entry => entry[key] !== value);
 
-        if (this.data.length !== originalLength) {
-            this.save(); // Save changes to the file
-            return true;
-        }
+    //     if (this.data.length !== originalLength) {
+    //         this.save(); // Save changes to the file
+    //         return true;
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 }
 
 module.exports = Table

@@ -15,3 +15,5 @@ const config = {
     currency: String,
     currency_symbol: String
 }
+
+module.exports = config

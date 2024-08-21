@@ -18,3 +18,5 @@ const config = {
     sn: Boolean,
     mr: Boolean,
 }
+
+module.exports = config
