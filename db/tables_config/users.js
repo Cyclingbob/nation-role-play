@@ -2,6 +2,7 @@ const config = {
     id: Number,
     username: String,
     password: String,
+    password_salt: String,
     created: Date,
     roles: Array,
     pfp: String,

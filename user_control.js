@@ -1,6 +1,6 @@
 const crypto = require("crypto")
 
-function hashPassword(password, callback){
+function hashPassword(password){
 
     const salt = crypto.randomBytes(16).toString("hex")
 
@@ -8,19 +8,37 @@ function hashPassword(password, callback){
     const hashBytes = 64;
     const digest = 'sha512';
 
-    crypto.pbkdf2(password, salt, iterations, hashBytes, digest, (err, derivedKey) => {
-        callback({ hashed: derivedKey.toString("hex"), salt })
-    })
+    return new Promise((resolve, reject) => {
+        crypto.pbkdf2(password, salt, iterations, hashBytes, digest, (err, derivedKey) => {
+            if(err) return reject(err)
+            resolve({ hashed: derivedKey.toString("hex"), salt })
+        })
+    })    
 }
 
 
 function create(table, username, password, ip){
+    let id = table.getLength() + 1
+
     if(username.length < 5) throw new Error("Username is too short")
     if(username.length > 40) throw new Error("Username is too long")
 
-    let id = table.getLength() + 1 
+    let { hashed, salt } = hashPassword(password)
+    console.log()
 
     let template = {
-        id, username
+        id,
+        username,
+        password: hashed,
+        password_salt: salt,
+        created: new Date(),
+        roles: [],
+        pfp: "",
+        last_logged_in: new Date(),
+        ip,
+        banned: false,
+        discord_id: ""
     }
+
+    
 }
