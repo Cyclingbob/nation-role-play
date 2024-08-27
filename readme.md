@@ -1,5 +1,10 @@
 # Saurth
 
+Provides an interface which I will create a web server to access similar to a wiki. But the project will act a module which you can write your own interface and use your own protocol for exchange of data.
+
+I aspire to have a user control system with permissions as listed in the next section. There will also be support for international organisations and events as well as news posts and maybe even maps.
+
+
 ## Role Permissions
 - rc - read content
 - cc - create content //create content on countries/orgs that you own or have permission to edit from their owners and polls
