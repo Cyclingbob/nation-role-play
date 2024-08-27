@@ -1,8 +1,8 @@
 const crypto = require("crypto")
 
-function hashPassword(password){
+function hashPassword(password, salt){
 
-    const salt = crypto.randomBytes(16).toString("hex")
+    if(!salt) salt = crypto.randomBytes(16).toString("hex")
 
     const iterations = 10000;
     const hashBytes = 64;
@@ -37,8 +37,20 @@ function create(table, username, password, ip){
         last_logged_in: new Date(),
         ip,
         banned: false,
-        discord_id: ""
+        discord_id: "",
+        sessions: []
     }
 
-    
+    table.add(template)
+    return template
+}
+
+async function login(table, username, password){
+    let user = table.findOne("username", username)
+    if(!user) throw new Error("Username not found");
+
+    let { password_salt } = user
+    let { hashed } = await hashPassword(password, password_salt)
+
+    if(hashed !== user.password) throw new Error("Password incorrect")
 }

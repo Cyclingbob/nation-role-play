@@ -57,7 +57,6 @@ class Table {
         let given_properties = Object.keys(entry)
         let missing = expecting_properties.filter(a => !given_properties.includes(a))
         let extra = given_properties.filter(a => !expecting_properties.includes(a))
-        console.log(extra)
 
         if(extra.length > 1){
             throw new Error(`Did not expect properties ${extra.join(', ')} when adding entry in table ${this.name}.`)
@@ -82,7 +81,6 @@ class Table {
         this.save()
 
         return entry
-
     }
 
     update(key, value, updated_entry){
