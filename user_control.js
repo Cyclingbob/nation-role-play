@@ -1,4 +1,11 @@
 const crypto = require("crypto")
+const fetch = require("node-fetch")
+const config = require("./config")
+
+function isPrivateIp(ip){
+    var reg = /(^127\.0\.0\.1)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2[0-9]\.)|(^172\.3[0-1]\.)|(^192\.168\.)/
+    return reg.test(ip)
+}
 
 function hashPassword(password, salt){
 
@@ -15,7 +22,6 @@ function hashPassword(password, salt){
         })
     })    
 }
-
 
 function create(table, username, password, ip){
     let id = table.getLength() + 1
@@ -38,19 +44,26 @@ function create(table, username, password, ip){
         ip,
         banned: false,
         discord_id: "",
-        sessions: []
+        // sessions: []
     }
 
     table.add(template)
     return template
 }
 
-async function login(table, username, password){
+async function login(table, username, password, agent, ip){
     let user = table.findOne("username", username)
     if(!user) throw new Error("Username not found");
 
     let { password_salt } = user
     let { hashed } = await hashPassword(password, password_salt)
 
-    if(hashed !== user.password) throw new Error("Password incorrect")
+    if(hashed !== user.password) throw new Error("Password incorrect");
+
+    return new Promise((resolve, reject) => {
+        fetch(`ipinfo.io/${ip}?token=${config.ip_info_token}`).then(res => res.json()).catch(reject).then(response => {
+
+        })
+    })
+    
 }
