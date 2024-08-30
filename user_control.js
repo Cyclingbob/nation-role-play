@@ -26,11 +26,12 @@ function hashPassword(password, salt){
 function create(table, username, password, ip){
     let id = table.getLength() + 1
 
-    if(username.length < 5) throw new Error("Username is too short")
-    if(username.length > 40) throw new Error("Username is too long")
+    if(username.length < 5) throw new Error("Username is too short");
+    if(username.length > 40) throw new Error("Username is too long");
+
+    if(password.length < 8) throw new Error("Password is too short");
 
     let { hashed, salt } = hashPassword(password)
-    console.log()
 
     let template = {
         id,
@@ -67,3 +68,5 @@ async function login(table, username, password, agent, ip){
     })
     
 }
+
+module.exports = { create, login, isPrivateIp }
